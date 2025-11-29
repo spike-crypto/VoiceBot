@@ -1,71 +1,153 @@
 ---
-description: Deployment guide for frontend and backend
+description: Complete deployment guide for Voice Bot
 ---
 
-# Deployment Guide
+# 🚀 Voice Bot Deployment Guide
 
-## Front‑end (React) – Vercel or Netlify
+## Current Deployment Status
 
-1. **Prerequisites**
-   - Ensure the project builds without errors (`npm run build`).
-   - All environment variables used at build time must be defined in the hosting service (e.g., `REACT_APP_API_URL`).
+### ✅ **Production URLs:**
+- **Frontend (Netlify)**: https://lively-crisp-4d3b28.netlify.app
+- **Backend (Hugging Face)**: https://viperlurk-voicebot.hf.space
 
-2. **Vercel**
-   - Sign in to <https://vercel.com> and click **New Project**.
-   - Connect the GitHub repository (or push the current repo to a new GitHub repo).
-   - Vercel automatically detects a React/Vite project. Set the **Build Command** to `npm run build` and the **Output Directory** to `dist` (or `build` if you use Create‑React‑App).
-   - Add any required environment variables under **Settings → Environment Variables**.
-   - Deploy – Vercel will provide a preview URL and a production URL.
+### ✅ **What's Working:**
+1. Text-to-text chat (fully functional)
+2. Voice-to-text (STT) - user can speak, LLM understands
+3. LLM responds as Balamurugan persona
+4. Conversation history/context maintained
+5. Frontend CI/CD (auto-deploys on GitHub push)
 
-3. **Netlify**
-   - Sign in to <https://app.netlify.com> and click **New site from Git**.
-   - Connect the repository and set the **Build command** to `npm run build` and **Publish directory** to `dist` (or `build`).
-   - Add environment variables in **Site settings → Build & deploy → Environment**.
-   - Deploy – Netlify will generate a live URL.
-
-4. **Considerations**
-   - Both platforms serve static assets over a CDN, giving fast load times.
-   - Ensure the **CORS** configuration on the backend allows the frontend domain (use `CORS_ORIGINS` in `backend/app/config.py`).
-   - For a seamless voice‑chat experience, keep the audio files small (< 5 MB) and enable HTTPS (both Vercel and Netlify provide it by default).
-
-## Back‑end (Flask) – Hugging Face Spaces
-
-1. **Create a Space**
-   - Go to <https://huggingface.co/spaces> and click **Create new Space**.
-   - Choose **“Docker”** as the SDK (or **“Gradio”** if you want the UI, but we’ll run Flask). Give it a name, e.g., `voice-bot-backend`.
-
-2. **Project Structure for Spaces**
-   - The root of the Space should contain:
-     - `app.py` (or `run.py`) – the Flask entry point.
-     - `requirements.txt` – list all Python dependencies (including `flask`, `flask_cors`, `groq`, `whisper`, `gtts`, etc.).
-     - `backend/` – keep your existing Flask app code.
-     - `Dockerfile` – optional; Hugging Face will auto‑detect a `requirements.txt` and build the container.
-
-3. **Modify the entry point for Spaces**
-   - Spaces expects the server to listen on the port provided by the `PORT` environment variable. Your existing `run.py` already does this:
-     ```python
-     port = int(os.environ.get('PORT', 5000))
-     socketio.run(app, host='0.0.0.0', port=port)
-     ```
-   - Ensure the file is named `app.py` or set the `HF_SPACE_RUN` environment variable to point to `run.py`.
-
-4. **Add Secrets**
-   - In the Space settings, add the required API keys (`GROQ_API_KEY`, `ELEVENLABS_API_KEY`, etc.) under **Secrets**. They will be injected as environment variables.
-
-5. **Deploy**
-   - Commit and push the code to the Space repository. Hugging Face will automatically build and start the Flask server.
-   - The public URL will be something like `https://<username>.hf.space`. Test the health endpoint (`/health`) to confirm it’s up.
-
-6. **CORS Configuration**
-   - In `backend/app/config.py`, set `CORS_ORIGINS` to the domain of your frontend (e.g., `['https://your-frontend.vercel.app']`).
-   - The Flask app already loads this value and applies `CORS(app, resources={r"/api/*": {"origins": CORS_ORIGINS}})` (or similar).
-
-## Summary of Rules to Remember
-- **Frontend**: Deploy on Vercel or Netlify (static CDN, HTTPS, easy env‑var handling).
-- **Backend**: Deploy on Hugging Face Spaces as a Flask app, using the existing `run.py` entry point and providing API keys via Secrets.
-- **CORS**: Keep `CORS_ORIGINS` in sync with the deployed frontend URL.
-- **Priority**: Voice‑chat priority is stored in `config.py` (`VOICE_PRIORITY`/`TEXT_PRIORITY`). You can later use these values for request‑handling logic.
+### ⚠️ **Known Issues:**
+1. **Text-to-voice (TTS)** - Requires valid ElevenLabs API key
+2. **Backend CI/CD** - Manual deployment required (GitHub Action failing)
 
 ---
 
-*These guidelines are now part of the project’s internal documentation and can be referenced for any future development or CI/CD pipelines.*
+## 🔧 **Making Code Changes**
+
+### **Frontend Changes (Auto-Deploy):**
+
+1. Make changes to files in `frontend/` folder
+2. Commit and push to GitHub:
+   ```powershell
+   git add .
+   git commit -m "Your change description"
+   git push
+   ```
+3. Netlify automatically detects the change and rebuilds
+4. Check deployment status at: https://app.netlify.com
+
+### **Backend Changes (Manual Deploy):**
+
+// turbo
+1. Make changes to files in `backend/` folder
+2. Run the upload script:
+   ```powershell
+   $env:HF_TOKEN="your_hf_token_here"
+   python clean_upload.py
+   ```
+3. Wait 1-2 minutes for Hugging Face to rebuild
+4. Check logs at: https://huggingface.co/spaces/viperlurk/VoiceBot
+
+---
+
+## 🔑 **Environment Variables**
+
+### **Netlify (Frontend):**
+Set in: Site settings → Environment variables
+
+| Variable | Value |
+|----------|-------|
+| `VITE_API_BASE_URL` | `https://viperlurk-voicebot.hf.space/api` |
+| `VITE_WS_URL` | `https://viperlurk-voicebot.hf.space` |
+
+### **Hugging Face (Backend):**
+Set in: Space Settings → Variables and secrets (as **Secrets**, not Variables)
+
+| Secret Name | Description |
+|-------------|-------------|
+| `ELEVENLABS_API_KEY` | Primary ElevenLabs API key |
+| `ELEVENLABS_API_KEY_BACKUP_1` | Backup key 1 (for quota failover) |
+| `ELEVENLABS_API_KEY_BACKUP_2` | Backup key 2 (for quota failover) |
+| `ELEVENLABS_VOICE_ID` | `ErXwobaYiN019PkySvjV` (Antoni - male voice) |
+| `MISTRAL_API_KEY` | Your Mistral API key |
+| `SECRET_KEY` | Random string for Flask sessions |
+
+---
+
+## 🐛 **Troubleshooting**
+
+### **Frontend not updating after push:**
+1. Go to Netlify → Deploys
+2. Click "Trigger deploy" → "Clear cache and deploy site"
+3. Hard refresh browser: `Ctrl + Shift + R`
+
+### **Backend not responding:**
+1. Check Hugging Face Space status (should show "Running")
+2. Check logs for errors
+3. Verify all secrets are set correctly
+4. Factory reboot if needed
+
+### **Voice (TTS) not working:**
+1. Verify ElevenLabs API key is valid
+2. Check ElevenLabs account quota
+3. Review backend logs for specific error
+4. Fallback mechanism will try all 3 keys automatically
+
+### **LLM errors (429 - Quota exceeded):**
+1. Mistral API has rate limits
+2. Wait a few minutes and try again
+3. Consider upgrading Mistral tier
+4. Or switch to `mistral-small-latest` model (edit `llm_service.py` line 76)
+
+---
+
+## 📊 **Monitoring**
+
+### **Check Frontend Status:**
+- Netlify Dashboard: https://app.netlify.com
+- View deploy logs
+- Check analytics
+
+### **Check Backend Status:**
+- Hugging Face Space: https://huggingface.co/spaces/viperlurk/VoiceBot
+- View container logs
+- Monitor API health: `https://viperlurk-voicebot.hf.space/api/health`
+
+---
+
+## 🔄 **Updating API Keys**
+
+### **When ElevenLabs key expires:**
+1. Go to elevenlabs.io → Profile → API Keys
+2. Generate new key
+3. Update Hugging Face secret: `ELEVENLABS_API_KEY`
+4. Factory reboot Space
+
+### **When Mistral key expires:**
+1. Go to console.mistral.ai
+2. Generate new key
+3. Update Hugging Face secret: `MISTRAL_API_KEY`
+4. Factory reboot Space
+
+---
+
+## ✅ **Deployment Checklist**
+
+Before deploying changes:
+- [ ] Test locally (`python run.py` for backend, `npm run dev` for frontend)
+- [ ] Commit changes to GitHub
+- [ ] Frontend: Push to GitHub (auto-deploys)
+- [ ] Backend: Run `clean_upload.py` script
+- [ ] Verify deployment on production URLs
+- [ ] Test voice bot functionality
+- [ ] Check logs for errors
+
+---
+
+## 🎯 **Future Improvements**
+
+1. **Fix Backend CI/CD**: Resolve GitHub Action token issue for automatic backend deployment
+2. **Add Monitoring**: Set up alerts for API failures
+3. **Improve Error Handling**: Better user feedback when voice fails
+4. **Add Analytics**: Track usage and conversation metrics

@@ -1,0 +1,187 @@
+/* ========================================
+   MOBILE RESPONSIVE STYLES FOR VOICE BOT
+   ======================================== */
+
+@media (max-width: 768px) {
+    .voice-bot__container {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem;
+        gap: 1rem;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .voice-bot__header {
+        padding: 0.5rem 0;
+        flex-shrink: 0;
+    }
+
+    .voice-bot__title {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+
+    .voice-bot__subtitle {
+        font-size: 0.875rem;
+    }
+
+    /* Make conversation panel scrollable and take available space */
+    .voice-bot__messages {
+        position: relative !important;
+        bottom: auto !important;
+        right: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+        overflow-y: auto;
+        margin-bottom: 0;
+    }
+
+    .voice-bot__messages-list {
+        max-height: none;
+        padding: 0.75rem;
+    }
+
+    .voice-bot__message {
+        max-width: 85%;
+        font-size: 0.9rem;
+    }
+
+    .voice-bot__message-content {
+        padding: 0.75rem 1rem;
+    }
+
+    /* Ensure input area is always visible at bottom */
+    .voice-bot__visualizer {
+        flex-shrink: 0;
+        margin-top: auto;
+    }
+
+    .voice-bot__mic-button {
+        width: 70px;
+        height: 70px;
+    }
+
+    .voice-bot__mic-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .voice-bot__text-form {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .voice-bot__text-input {
+        font-size: 1rem;
+        padding: 0.875rem 1.25rem;
+    }
+
+    .voice-bot__send-button {
+        width: 50px;
+        height: 50px;
+        flex-shrink: 0;
+    }
+
+    .voice-bot__send-button svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Mode toggle button */
+    .voice-bot__mode-toggle {
+        flex-shrink: 0;
+        margin-top: 0.5rem;
+    }
+
+    .voice-bot__toggle-button {
+        font-size: 0.875rem;
+        padding: 0.625rem 1rem;
+    }
+
+    .voice-bot__toggle-button svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Status badges */
+    .voice-bot__status {
+        margin-bottom: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .voice-bot__status-badge {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+
+    /* Error messages */
+    .voice-bot__error {
+        font-size: 0.875rem;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+    }
+
+    /* Instructions */
+    .voice-bot__instructions {
+        font-size: 0.875rem;
+        padding: 1rem;
+    }
+
+    /* Reduce orb sizes for mobile */
+    .voice-bot__orb--1 {
+        width: 300px;
+        height: 300px;
+    }
+
+    .voice-bot__orb--2 {
+        width: 250px;
+        height: 250px;
+    }
+
+    .voice-bot__orb--3 {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+    .voice-bot__title {
+        font-size: 1.5rem;
+    }
+
+    .voice-bot__subtitle {
+        font-size: 0.8rem;
+    }
+
+    .voice-bot__mic-button {
+        width: 60px;
+        height: 60px;
+    }
+
+    .voice-bot__mic-icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .voice-bot__message {
+        max-width: 90%;
+        font-size: 0.85rem;
+    }
+
+    .voice-bot__text-input {
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .voice-bot__send-button {
+        width: 45px;
+        height: 45px;
+    }
+}

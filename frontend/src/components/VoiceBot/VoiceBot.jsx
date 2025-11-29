@@ -3,6 +3,7 @@ import { useConversationContext } from '../../context/ConversationContext'
 import { chatAPI } from '../../services/api'
 import './VoiceBot.css'
 import './VoiceBot-additions.css'
+import './VoiceBot-mobile.css'
 
 const VoiceBot = () => {
     const { messages, addMessage, sessionId, clearConversation } = useConversationContext()
