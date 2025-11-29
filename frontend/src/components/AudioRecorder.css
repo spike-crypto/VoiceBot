@@ -1,0 +1,137 @@
+.audio-recorder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.recorder-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.record-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.record-button.start {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.record-button.start:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.record-button.start:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.record-button.stop {
+  background: #ef4444;
+  color: white;
+}
+
+.record-button.stop:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+.record-button.cancel {
+  background: #6b7280;
+  color: white;
+}
+
+.record-button.cancel:hover {
+  background: #4b5563;
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ef4444;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.pulse {
+  width: 12px;
+  height: 12px;
+  background: #ef4444;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.recording-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.error-message {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 0.5rem;
+}
+
+.recording-indicator {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.record-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.record-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.record-button.stop {
+  background: #ef4444;
+}
+
+.record-button.stop:hover {
+  background: #dc2626;
+}
+
+.record-button.cancel {
+  background: rgba(107, 114, 128, 0.5);
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+.record-button.cancel:hover {
+  background: rgba(107, 114, 128, 0.7);
+}
+
