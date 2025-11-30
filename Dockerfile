@@ -18,6 +18,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the backend code into the container root
 COPY backend/ .
 
+# Copy assets folder for TTS voice cloning
+COPY assets/ /app/assets/
+
 # Create uploads directory
 RUN mkdir -p uploads && chmod 777 uploads
 
