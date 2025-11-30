@@ -1,3 +1,14 @@
+---
+title: VoiceBot
+emoji: 🤖
+colorFrom: blue
+colorTo: indigo
+sdk: gradio
+sdk_version: 4.0.0
+app_file: app.py
+pinned: false
+---
+
 # Advanced Voice Bot Interview Assistant
 
 A modern, production-ready voice-to-voice interview bot built with React frontend and Flask backend.
