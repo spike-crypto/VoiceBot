@@ -260,7 +260,7 @@ with gr.Blocks(title="Balamurugan's Interview Voice Bot") as demo:
     with gr.Row():
         with gr.Column(scale=2):
             audio_input = gr.Audio(
-                source="microphone", 
+                sources=["microphone"], 
                 type="filepath", 
                 label="🎤 Record Your Question",
                 show_label=True
